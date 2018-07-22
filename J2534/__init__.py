@@ -1,2 +1,9 @@
 from .wrapper import j2534lib
-from .wrapper import ptOpen, ptReadVersion
+from .Define import *
+
+from .wrapper import ptOpen, ptClose
+from .wrapper import ptConnect, ptDisconnect
+from .wrapper import ptReadMsgs, ptWtiteMsgs
+from .wrapper import ptStartPeriodicMsg, ptStopPeriodicMsg
+from .wrapper import ptStartMsgFilter, ptStopMsgFilter
+from .wrapper import ptSetProgrammingVoltage, ptReadVersion, ptGetLastError, ptIoctl
