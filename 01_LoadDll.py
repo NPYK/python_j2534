@@ -1,5 +1,4 @@
 #coding:utf-8
-from J2534 import J2534Lib
+from J2534 import j2534lib
 
-lib = J2534Lib()
-print lib.DeviceList
+print j2534lib.getDeviceList()

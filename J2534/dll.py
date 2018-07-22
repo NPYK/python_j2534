@@ -32,7 +32,7 @@ class CanlibDll(dllLoader.MyDll):
         'PassThruDisconnect':[[ct.c_ulong]],
         'PassThruReadMsgs':[[ct.c_ulong, ct.POINTER(PassThru_Msg), ct.POINTER(ct.c_ulong), ct.POINTER(ct.c_ulong)]],
         'PassThruWriteMsgs':[[ct.c_ulong, ct.POINTER(PassThru_Msg), ct.POINTER(ct.c_ulong), ct.POINTER(ct.c_ulong)]],
-        'PassThruStartPeriodicMsg':[[ct.c_ulong, ct.POINTER(PassThru_Msg), ct.POINTER(ct.c_ulong), ct.POINTER(ct.c_ulong)]],
+        'PassThruStartPeriodicMsg':[[ct.c_ulong, ct.POINTER(PassThru_Msg), ct.POINTER(ct.c_ulong), ct.c_ulong]],
         'PassThruStopPeriodicMsg':[[ct.c_ulong,ct.c_ulong]],
         'PassThruStartMsgFilter':[[ct.c_ulong, ct.c_ulong, ct.POINTER(PassThru_Msg), ct.POINTER(PassThru_Msg), ct.POINTER(PassThru_Msg), ct.POINTER(ct.c_ulong)]],
         'PassThruStopMsgFilter':[[ct.c_ulong,ct.c_ulong]],
@@ -50,7 +50,4 @@ class CanlibDll(dllLoader.MyDll):
 
     def _error_check(self, result, func, arguments):
         """Error function used in ctype calls for canlib DLL."""
-        if result < 0:
-            raise print result
-        else:
-            return result
+        return result
