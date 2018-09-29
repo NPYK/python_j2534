@@ -2,15 +2,18 @@ import ctypes as ct
 
 import dllLoader
 
+PassThru_Data = (ct.c_char * 4128)
 class PassThru_Msg(ct.Structure):
     _fields_ = [
-        ("ProtocolID", ct.c_ulong),
+        ("ProtocolID", ct.c_ulong), 
         ("RxStatus", ct.c_ulong),
-        ("TxFlags", ct.c_ulong),
+        ("TxFlags", ct.c_ulong), 
         ("Timestamp", ct.c_ulong),
-        ("DataSize", ct.c_ulong),
-        ("ExtraDataIndex", ct.c_ulong),
-        ("Data", ct.c_char * 4128)]
+        ("DataSize", ct.c_ulong), 
+        ("ExtraDataIndex",ct.c_ulong), 
+        ("Data", PassThru_Data)]
+
+
 class Sconfig(ct.Structure):
     _fields_ = [
         ("Parameter", ct.c_ulong),
@@ -31,7 +34,7 @@ class CanlibDll(dllLoader.MyDll):
         'PassThruConnect':[[ct.c_ulong,ct.c_ulong,ct.c_ulong,ct.c_ulong,ct.POINTER(ct.c_ulong)]],
         'PassThruDisconnect':[[ct.c_ulong]],
         'PassThruReadMsgs':[[ct.c_ulong, ct.POINTER(PassThru_Msg), ct.POINTER(ct.c_ulong), ct.POINTER(ct.c_ulong)]],
-        'PassThruWriteMsgs':[[ct.c_ulong, ct.POINTER(PassThru_Msg), ct.POINTER(ct.c_ulong), ct.POINTER(ct.c_ulong)]],
+        'PassThruWriteMsgs':[[ct.c_ulong, ct.POINTER(PassThru_Msg), ct.POINTER(ct.c_ulong), ct.c_ulong]],
         'PassThruStartPeriodicMsg':[[ct.c_ulong, ct.POINTER(PassThru_Msg), ct.POINTER(ct.c_ulong), ct.c_ulong]],
         'PassThruStopPeriodicMsg':[[ct.c_ulong,ct.c_ulong]],
         'PassThruStartMsgFilter':[[ct.c_ulong, ct.c_ulong, ct.POINTER(PassThru_Msg), ct.POINTER(PassThru_Msg), ct.POINTER(PassThru_Msg), ct.POINTER(ct.c_ulong)]],

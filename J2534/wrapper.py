@@ -2,8 +2,17 @@
 
 import sys
 from dllLoader import getDeviceList, load_dll
-from dll import CanlibDll
+from dll import *
 import ctypes as ct
+import Define
+ptData = PassThru_Data
+class ptTxMsg(PassThru_Msg):
+    def __init__(self, ProtocolID, TxFlags):
+        self.ProtocolID = ProtocolID
+        self.TxFlags = TxFlags
+    def setData(self, data, size):
+        self.DataSize = size
+        self.Data = data
 
 
 class J2534Lib():
@@ -16,7 +25,7 @@ class J2534Lib():
         self.dll = load_dll(dllpath)
         self.canlib = CanlibDll(self.dll)
     def setDevice(self, num = 0):
-        name, dllpath = self.DeviceList[num]
+        name, dllpath = self.DeviceList[int(num)]
         self._setDevice(name, dllpath)
     def getDeviceList(self):
         return self.DeviceList
@@ -55,7 +64,13 @@ def ptReadMsgs(ChannelID, Msgs, NumMsgs, Timeout):
     """
     j2534lib.PassThruReadMsgs(ChannelID, ct.byref(Msgs), ct.byref(NumMsgs), Timeout)
 def ptWtiteMsgs(ChannelID, Msgs, NumMsgs, Timeout):
-    """ :TODO
+    """[summary]
+    
+    Arguments:
+        ChannelID {[type]} -- [description]
+        Msgs {[type]} -- [description]
+        NumMsgs {[type]} -- [description]
+        Timeout {[type]} -- [description]
     """
     j2534lib.PassThruWriteMsgs(ChannelID, ct.byref(Msgs), ct.byref(NumMsgs), Timeout)
 def ptStartPeriodicMsg(ChannelID, Msgs, MsgID, TimeInterval):
@@ -83,6 +98,8 @@ def ptReadVersion(DeviceId):
     
     Keyword Arguments:
         DeviceId {[int]} -- Device Id Number
+    return
+
     """
     FirmwareVersion = ct.create_string_buffer(80)
     DllVersion = ct.create_string_buffer(80)
@@ -99,4 +116,3 @@ def ptIoctl(HandleID, IoctlID, Input, Output):
     """ :TODO
     """
     j2534lib.PassThruIoctl(HandleID, IoctlID, Input, Output)
-    
