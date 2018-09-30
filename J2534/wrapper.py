@@ -5,16 +5,21 @@ from dllLoader import getDeviceList, load_dll
 from dll import *
 import ctypes as ct
 import Define
+import Func
 ptData = PassThru_Data
 class ptTxMsg(PassThru_Msg):
     def __init__(self, ProtocolID, TxFlags):
         self.ProtocolID = ProtocolID
         self.TxFlags = TxFlags
-    def setData(self, data, size):
-        self.DataSize = size
-        self.Data = data
-
-
+    def setData(self, data):
+        print data
+        self.DataSize = len(data)
+        self.Data = ptData()
+        for i in range(self.DataSize):
+            self.Data[i] = data[i]
+    def setIDandData(self, ID, data):
+        d = Func.IntToID(ID) + data
+        self.setData(d)
 class J2534Lib():
     def __init__(self):
         self.DeviceList = getDeviceList()

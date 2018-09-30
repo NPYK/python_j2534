@@ -2,15 +2,15 @@ import ctypes as ct
 
 import dllLoader
 
-PassThru_Data = (ct.c_char * 4128)
+PassThru_Data = (ct.c_ubyte * 4128)
 class PassThru_Msg(ct.Structure):
     _fields_ = [
-        ("ProtocolID", ct.c_ulong), 
+        ("ProtocolID", ct.c_ulong),
         ("RxStatus", ct.c_ulong),
-        ("TxFlags", ct.c_ulong), 
+        ("TxFlags", ct.c_ulong),
         ("Timestamp", ct.c_ulong),
-        ("DataSize", ct.c_ulong), 
-        ("ExtraDataIndex",ct.c_ulong), 
+        ("DataSize", ct.c_ulong),
+        ("ExtraDataIndex",ct.c_ulong),
         ("Data", PassThru_Data)]
 
 

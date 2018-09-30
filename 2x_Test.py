@@ -17,13 +17,11 @@ ch3 = J2534.ptConnect(id1, J2534.ISO15765, 0, 500000)
 ch4 = J2534.ptConnect(id1, J2534.ISO15765, 0, 500000)
 ch5 = J2534.ptConnect(id1, J2534.ISO15765, 0, 500000)
 print ch1, ch2, ch3,ch4,ch5
-
-data = J2534.ptData()
-for i in range(0,10):
-    data[i] = '1'
 data = [ 0x00, 0x00, 0x07, 0xdf, 0x01, 0x02, 0x01, 0x02, 0x01, 0x02]
 msg = J2534.ptTxMsg(Define.ISO15765, Define.ISO15765_FRAME_PAD)
-msg.setData(str(data), 10)
+
+#msg.setData(data)
+msg.setIDandData(0x7df, [1,2,3,4,5,6,7,8])
 J2534.ptWtiteMsgs(ch1, msg, ct.c_ulong(1), 100)
 
 J2534.ptDisconnect(ch1)
