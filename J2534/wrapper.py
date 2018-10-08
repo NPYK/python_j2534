@@ -6,6 +6,8 @@ from dll import *
 import ctypes as ct
 import Define
 import Func
+
+from Error import J2534Error
 ptData = PassThru_Data
 class ptTxMsg(PassThru_Msg):
     def __init__(self, ProtocolID, TxFlags):
@@ -44,7 +46,8 @@ j2534lib = J2534Lib()
 def ptOpen():
     Name = ''
     DeviceId = ct.c_ulong()
-    j2534lib.PassThruOpen(bytes(Name), ct.byref(DeviceId))
+    ret = j2534lib.PassThruOpen(bytes(Name), ct.byref(DeviceId))
+    print J2534Error[ret]
     return DeviceId.value
 def ptClose(DeviceId):
     """Close Device

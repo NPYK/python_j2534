@@ -8,3 +8,5 @@ from .wrapper import ptReadMsgs, ptWtiteMsgs
 from .wrapper import ptStartPeriodicMsg, ptStopPeriodicMsg
 from .wrapper import ptStartMsgFilter, ptStopMsgFilter
 from .wrapper import ptSetProgrammingVoltage, ptReadVersion, ptGetLastError, ptIoctl
+
+from .Error import J2534Error

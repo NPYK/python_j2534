@@ -35,7 +35,7 @@ def annotate(dll_object, function_name, argtypes,
     function.argtypes = argtypes
     # restype and errcheck is optional in the function_prototypes list
     if restype is DEFAULT:
-        restype = dll_object.default_restype
+        restype = ct.c_long ##dll_object.default_restype ##
     function.restype = restype
     if errcheck is DEFAULT:
         errcheck = dll_object.default_errcheck
