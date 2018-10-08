@@ -7,7 +7,6 @@ import ctypes as ct
 import Define
 import Func
 
-from Error import J2534Error
 ptData = PassThru_Data
 class ptTxMsg(PassThru_Msg):
     def __init__(self, ProtocolID, TxFlags):
@@ -47,30 +46,32 @@ def ptOpen():
     Name = ''
     DeviceId = ct.c_ulong()
     ret = j2534lib.PassThruOpen(bytes(Name), ct.byref(DeviceId))
-    print J2534Error[ret]
-    return DeviceId.value
+    print ret, DeviceId.value
 def ptClose(DeviceId):
     """Close Device
     
     Keyword Arguments:
         DeviceId {[int]} -- Device Id Number
     """
-    j2534lib.PassThruClose(DeviceId)
+    ret = j2534lib.PassThruClose(DeviceId)
+    return ret
 def ptConnect(DeviceId, ProtocolID, Flags, BaudRate):
     """Connect
 
     """
     ChannelID = ct.c_ulong()
-    j2534lib.PassThruConnect(DeviceId, ProtocolID, Flags, BaudRate, ct.byref(ChannelID))
-    return ChannelID.value
+    ret = j2534lib.PassThruConnect(DeviceId, ProtocolID, Flags, BaudRate, ct.byref(ChannelID))
+    return ret, ChannelID.value
 def ptDisconnect(ChannelID):
     """ :TODO
     """
-    j2534lib.PassThruDisconnect(ChannelID)
+    ret = j2534lib.PassThruDisconnect(ChannelID)
+    return ret
 def ptReadMsgs(ChannelID, Msgs, NumMsgs, Timeout):
     """ :TODO
     """
-    j2534lib.PassThruReadMsgs(ChannelID, ct.byref(Msgs), ct.byref(NumMsgs), Timeout)
+    ret = j2534lib.PassThruReadMsgs(ChannelID, ct.byref(Msgs), ct.byref(NumMsgs), Timeout)
+    return ret
 def ptWtiteMsgs(ChannelID, Msgs, NumMsgs, Timeout):
     """[summary]
     
@@ -80,7 +81,8 @@ def ptWtiteMsgs(ChannelID, Msgs, NumMsgs, Timeout):
         NumMsgs {[type]} -- [description]
         Timeout {[type]} -- [description]
     """
-    j2534lib.PassThruWriteMsgs(ChannelID, ct.byref(Msgs), ct.byref(NumMsgs), Timeout)
+    ret = j2534lib.PassThruWriteMsgs(ChannelID, ct.byref(Msgs), ct.byref(NumMsgs), Timeout)
+    return ret
 def ptStartPeriodicMsg(ChannelID, Msgs, MsgID, TimeInterval):
     """ :TODO
     """
@@ -112,8 +114,8 @@ def ptReadVersion(DeviceId):
     FirmwareVersion = ct.create_string_buffer(80)
     DllVersion = ct.create_string_buffer(80)
     ApiVersion = ct.create_string_buffer(80)
-    j2534lib.PassThruReadVersion(DeviceId, FirmwareVersion, DllVersion, ApiVersion)
-    return FirmwareVersion.value, DllVersion.value, ApiVersion.value
+    ret = j2534lib.PassThruReadVersion(DeviceId, FirmwareVersion, DllVersion, ApiVersion)
+    return ret, FirmwareVersion.value, DllVersion.value, ApiVersion.value
 def ptGetLastError():
     """ :TODO
     """

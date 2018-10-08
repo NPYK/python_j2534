@@ -19,9 +19,9 @@ def getDeviceList():
 def getDeviceVersion( id ):
     id = int(id)
     J2534.j2534lib.setDevice(id)
-    deviceID = J2534.ptOpen()
+    ret, deviceID = J2534.ptOpen()
     print deviceID
-    firmVersion, DllVersion, ApiVersion = J2534.ptReadVersion(deviceID)
+    ret, firmVersion, DllVersion, ApiVersion = J2534.ptReadVersion(deviceID)
     J2534.ptClose(deviceID)
     print 'Device Version Information:\n'
     table = PrettyTable(['Firmware Version', 'Dll Version', 'Api Version'])

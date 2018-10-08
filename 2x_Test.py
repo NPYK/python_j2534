@@ -7,15 +7,15 @@ print J2534.j2534lib.getDeviceList()
 
 
 J2534.j2534lib.setDevice(int(sys.argv[1]))
-id1 = J2534.ptOpen()
+ret, id1 = J2534.ptOpen()
 print id1
 print J2534.ptReadVersion(id1)
 
-ch1 = J2534.ptConnect(id1, J2534.ISO15765, 0, 500000)
-ch2 = J2534.ptConnect(id1, J2534.ISO15765, 0, 500000)
-ch3 = J2534.ptConnect(id1, J2534.ISO15765, 0, 500000)
-ch4 = J2534.ptConnect(id1, J2534.ISO15765, 0, 500000)
-ch5 = J2534.ptConnect(id1, J2534.ISO15765, 0, 500000)
+ret,ch1 = J2534.ptConnect(id1, J2534.ISO15765, 0, 500000)
+ret,ch2 = J2534.ptConnect(id1, J2534.ISO15765, 0, 500000)
+ret,ch3 = J2534.ptConnect(id1, J2534.ISO15765, 0, 500000)
+ret,ch4 = J2534.ptConnect(id1, J2534.ISO15765, 0, 500000)
+ret,ch5 = J2534.ptConnect(id1, J2534.ISO15765, 0, 500000)
 print ch1, ch2, ch3,ch4,ch5
 data = [ 0x00, 0x00, 0x07, 0xdf, 0x01, 0x02, 0x01, 0x02, 0x01, 0x02]
 msg = J2534.ptTxMsg(Define.ISO15765, Define.ISO15765_FRAME_PAD)
