@@ -1,4 +1,5 @@
 #coding:utf-8
+
 INI_RW_MSG						= 0
 INI_MK_MSG						= 1
 INI_PT_MSG						= 2
@@ -97,8 +98,9 @@ READ_PROG_VOLTAGE						= 0x0E
 # J2534-2 SWCAN
 SWCAN_NS							= 0x8000 # Not supported
 SWCAN_HS							= 0x8001 # Not supported
-	
-	
+SET_POLL_RESPONSE					= 0x8002
+BECOME_MASTER						= 0x8003		
+
 # DT CarDAQ2534 Ioctl values to read most recent analog sample (Flushes all samples in queue)
 READ_CH1_VOLTAGE					= 0x10000 # Not supported
 READ_CH2_VOLTAGE					= 0x10001 # Not supported

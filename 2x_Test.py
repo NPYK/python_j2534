@@ -21,7 +21,7 @@ data = [ 0x00, 0x00, 0x07, 0xdf, 0x01, 0x02, 0x01, 0x02, 0x01, 0x02]
 msg = J2534.ptTxMsg(Define.ISO15765, Define.ISO15765_FRAME_PAD)
 
 #msg.setData(data)
-msg.setIDandData(0x7df, [1,2,3,4,5,6,7,8])
+msg.setIDandData(0x7df, [1,2,3,4,5,6,7])
 J2534.ptWtiteMsgs(ch1, msg, ct.c_ulong(1), 100)
 
 J2534.ptDisconnect(ch1)
