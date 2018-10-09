@@ -31,12 +31,12 @@ def getDeviceConnect():
     pass
 if __name__ == "__main__":
     """[summary]
-        命令行解析程序，输出help文档如下所示：
         usage: use "python build.py --help" for more information
 
         optional arguments:
-            -h, --help            show this help message and exit
-            -v, --version         show program's version number and exit
+            -h, --help            show this help message and exit.
+            -v, --version         show program's version number and exit.
+            -d, --device          show J2534 Device Infomation and Dll message.
     """
     parser = argparse.ArgumentParser(
         description = 'For J2534',
@@ -45,7 +45,7 @@ if __name__ == "__main__":
     parser.add_argument(
         '-D',
         '--device',
-        help='Print Device List!',
+        help='show J2534 Device Infomation and Dll message.',
         action='store_true')
     parser.add_argument(
         '-S',
