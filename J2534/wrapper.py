@@ -42,11 +42,15 @@ class J2534Lib():
             raise AttributeError("{t} object has no attribute {n}".format(
                 t=str(type(self)), n=name))
 j2534lib = J2534Lib()
+
+
 def ptOpen():
+    """[Open Device]
+    """
     Name = ''
     DeviceId = ct.c_ulong()
     ret = j2534lib.PassThruOpen(bytes(Name), ct.byref(DeviceId))
-    print ret, DeviceId.value
+    return ret, DeviceId.value
 def ptClose(DeviceId):
     """Close Device
     
