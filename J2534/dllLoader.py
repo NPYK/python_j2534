@@ -66,15 +66,19 @@ class MyDll(object):
         for name, prototype in function_prototypes.items():
             annotate(self, name, *prototype)
 
-def getDeviceList():
+def getDevices():
+    """TODO:
+    获取更多key，比如支持测protocols；
+    """
     BaseKey = winreg.OpenKeyEx(winreg.HKEY_LOCAL_MACHINE, PASSTHRU_REG)
     count = winreg.QueryInfoKey(BaseKey)[0]
-    J2534_Device_Reg_Info = []
+    J2534_Device_Reg_Info = dict()
     for i in range(count):
         DeviceKey = winreg.OpenKeyEx(BaseKey, winreg.EnumKey(BaseKey, i))
-        Name = winreg.QueryValueEx(DeviceKey, 'Name')[0]
-        FunctionLibrary = winreg.QueryValueEx(DeviceKey, 'FunctionLibrary')[0]
-        J2534_Device_Reg_Info.append((Name, FunctionLibrary))
+        singleDll = dict()
+        singleDll['Name'] = winreg.QueryValueEx(DeviceKey, 'Name')[0]
+        singleDll['FunctionLibrary'] = winreg.QueryValueEx(DeviceKey, 'FunctionLibrary')[0]
+        J2534_Device_Reg_Info[i] = singleDll
     return J2534_Device_Reg_Info
 
 def load_dll(dll_path = None):

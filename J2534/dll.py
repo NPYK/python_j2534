@@ -1,7 +1,6 @@
 import ctypes as ct
 
-import dllLoader
-
+from J2534.dllLoader import MyDll
 PassThru_Data = (ct.c_ubyte * 4128)
 class PassThru_Msg(ct.Structure):
     _fields_ = [
@@ -12,7 +11,6 @@ class PassThru_Msg(ct.Structure):
         ("DataSize", ct.c_ulong),
         ("ExtraDataIndex",ct.c_ulong),
         ("Data", PassThru_Data)]
-
 
 class Sconfig(ct.Structure):
     _fields_ = [
@@ -27,7 +25,10 @@ class Sbyte_Array(ct.Structure):
         ("NumOfBytes", ct.c_ulong),
         ("BytePtr", ct.c_char_p)]
 
-class CanlibDll(dllLoader.MyDll):
+class CanlibDll(MyDll):
+    """
+    SAE J2534-1 2004
+    """
     function_prototypes = {
         'PassThruOpen':[[ct.c_void_p, ct.POINTER(ct.c_ulong)]],
         'PassThruClose':[[ct.c_ulong]],

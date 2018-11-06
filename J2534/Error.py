@@ -173,10 +173,13 @@ J2534Error[ERR_INVALID_DEVICE_ID] = (
     'ERR_INVALID_DEVICE_ID',
     'Unable to communicate with device')
 
+def printerr(ret):
+    print ( J2534Error[ret][1] )
+
 if __name__ == '__main__':
     import sys
     if sys.argv[1] == 'all':
         for i in range(0x1A+1):
-            print  hex(i),J2534Error[i]
+            print  (hex(i),J2534Error[i])
     else:
-        print J2534Error[int(sys.argv[1],16)]
+        print (J2534Error[int(sys.argv[1],16)])

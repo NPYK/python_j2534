@@ -1,5 +1,36 @@
 #coding:utf-8
 
+
+
+"""
+	ProtocolID definitions
+"""
+
+class ProtocolID(object):
+	J1850VPW						= 1 # Not supported
+	J1850PWM				    	= 2 # Not supported
+	ISO9141							= 3	# Not supported
+	ISO14230						= 4 # Not supported
+	CAN							    = 5
+	ISO15765						= 6
+	SCI_A_ENGINE					= 7 # Not supported
+	SCI_A_TRANS						= 8 # Not supported
+	SCI_B_ENGINE					= 9 # Not supported
+	SCI_B_TRANS						= 10 # Not supported
+
+class FilterType(object):
+	"""
+	Filter definitions
+	"""
+	PASS_FILTER									= 0x00000001
+	BLOCK_FILTER								= 0x00000002
+	FLOW_CONTROL_FILTER							= 0x00000003
+	PASS_FILTER_WITH_TRIGGER					= 0x10000005 #DT Not Supported
+	BLOCK_FILTER_WITH_TRIGGER					= 0x10000006 #DT Not Supported
+
+
+
+
 INI_RW_MSG						= 0
 INI_MK_MSG						= 1
 INI_PT_MSG						= 2
@@ -9,19 +40,7 @@ P_FIRMWARE_VERSION				= 0
 P_DLL_VERSION					= 1
 P_API_VERSION					= 2
 
-#**************************
-#* ProtocolID definitions *
-#**************************
-J1850VPW						= 1 # Not supported
-J1850PWM				    	= 2 # Not supported
-ISO9141							= 3
-ISO14230						= 4
-CAN							    = 5
-ISO15765						= 6
-SCI_A_ENGINE					= 7 # Not supported
-SCI_A_TRANS						= 8 # Not supported
-SCI_B_ENGINE					= 9 # Not supported
-SCI_B_TRANS						= 10 # Not supported
+
 
 # J2534-2 Pin Switched ProtocolIDs
 J1850VPW_PS							= 0x8000 # Not supported
@@ -74,24 +93,23 @@ J1708_PS						= 0x10000001# Not supported
 #*************/
 #* IOCTL IDs */
 #*************/
-GET_CONFIG						= 0x01
-SET_CONFIG						= 0x02
-READ_VBATT						= 0x03
-FIVE_BAUD_INIT					= 0x04
-FAST_INIT						= 0x05
-	
-	
-	
-# unused							= 0x06
-CLEAR_TX_BUFFER							= 0x07
-CLEAR_RX_BUFFER							= 0x08
-CLEAR_PERIODIC_MSGS						= 0x09
-CLEAR_MSG_FILTERS						= 0x0A
-CLEAR_FUNCT_MSG_LOOKUP_TABLE			= 0x0B # Not supported
-ADD_TO_FUNCT_MSG_LOOKUP_TABLE			= 0x0C # Not supported
-DELETE_FROM_FUNCT_MSG_LOOKUP_TABLE		= 0x0D # Not supported
-READ_PROG_VOLTAGE						= 0x0E
-	
+
+class IoctlID(object):
+	GET_CONFIG						= 0x01
+	SET_CONFIG						= 0x02
+	READ_VBATT						= 0x03
+	FIVE_BAUD_INIT					= 0x04
+	FAST_INIT						= 0x05
+	# unused							= 0x06
+	CLEAR_TX_BUFFER							= 0x07
+	CLEAR_RX_BUFFER							= 0x08
+	CLEAR_PERIODIC_MSGS						= 0x09
+	CLEAR_MSG_FILTERS						= 0x0A
+	CLEAR_FUNCT_MSG_LOOKUP_TABLE			= 0x0B # Not supported
+	ADD_TO_FUNCT_MSG_LOOKUP_TABLE			= 0x0C # Not supported
+	DELETE_FROM_FUNCT_MSG_LOOKUP_TABLE		= 0x0D # Not supported
+	READ_PROG_VOLTAGE						= 0x0E
+		
 	
 	
 	
@@ -259,14 +277,15 @@ ISO9141_NO_CHECKSUM_DT				= 0x40000000 #compat with CarDAQ2534
 #************************/
 #* RxStatus definitions */
 #************************/
-TX_MSG_TYPE							= 0x00000001
-START_OF_MESSAGE					= 0x00000002
-ISO15765_FIRST_FRAME				= 0x00000002 #compat from v0202
-ISO15765_EXT_ADDR					= 0x00000080 # Accidentally refered to in spec
-RX_BREAK							= 0x00000004
-TX_DONE								= 0x00000008
-ISO15765_PADDING_ERROR				= 0x00000010
-ISO15765_ADDR_TYPE					= 0x00000080
+class RxStatus(object):
+	TX_MSG_TYPE							= 0x00000001
+	START_OF_MESSAGE					= 0x00000002
+	ISO15765_FIRST_FRAME				= 0x00000002 #compat from v0202
+	ISO15765_EXT_ADDR					= 0x00000080 # Accidentally refered to in spec
+	RX_BREAK							= 0x00000004
+	TX_DONE								= 0x00000008
+	ISO15765_PADDING_ERROR				= 0x00000010
+	ISO15765_ADDR_TYPE					= 0x00000080
 	
 	
 #		CAN_29BIT_ID						= 0x00000100  defined above
@@ -290,14 +309,6 @@ SCI_MODE								= 0x00400000 # Not supported
 SCI_TX_VOLTAGE							= 0x00800000 # Not supported
 
 
-#**********************/
-#* Filter definitions */
-#**********************/
-PASS_FILTER									= 0x00000001
-BLOCK_FILTER								= 0x00000002
-FLOW_CONTROL_FILTER							= 0x00000003
-PASS_FILTER_WITH_TRIGGER					= 0x10000005 #DT Not Supported
-BLOCK_FILTER_WITH_TRIGGER					= 0x10000006 #DT Not Supported
 
 
 ISO15765_FRAME_PAD							= 0x00000040
