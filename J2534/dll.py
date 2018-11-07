@@ -34,7 +34,7 @@ class CanlibDll(MyDll):
         'PassThruClose':[[ct.c_ulong]],
         'PassThruConnect':[[ct.c_ulong,ct.c_ulong,ct.c_ulong,ct.c_ulong,ct.POINTER(ct.c_ulong)]],
         'PassThruDisconnect':[[ct.c_ulong]],
-        'PassThruReadMsgs':[[ct.c_ulong, ct.POINTER(PassThru_Msg), ct.POINTER(ct.c_ulong), ct.POINTER(ct.c_ulong)]],
+        'PassThruReadMsgs':[[ct.c_ulong, ct.POINTER(PassThru_Msg), ct.POINTER(ct.c_ulong), ct.c_ulong]],
         'PassThruWriteMsgs':[[ct.c_ulong, ct.POINTER(PassThru_Msg), ct.POINTER(ct.c_ulong), ct.c_ulong]],
         'PassThruStartPeriodicMsg':[[ct.c_ulong, ct.POINTER(PassThru_Msg), ct.POINTER(ct.c_ulong), ct.c_ulong]],
         'PassThruStopPeriodicMsg':[[ct.c_ulong,ct.c_ulong]],

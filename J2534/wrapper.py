@@ -36,8 +36,11 @@ class ptTxMsg(baseMsg):
     def __init__(self, ProtocolID, TxFlags):
         self.ProtocolID = ProtocolID
         self.TxFlags = TxFlags
-    
-    
+class ptRxMsg(baseMsg):
+    def show(self):
+        print(self.ProtocolID)
+        print(self.RxStatus)
+        print(self.Data[:self.DataSize])
 class J2534Lib():
     def __init__(self):
         self.Devices = dllloader.getDevices()
@@ -87,7 +90,7 @@ def ptDisconnect(ChannelID):
 def ptReadMsgs(ChannelID, Msgs, NumMsgs, Timeout):
     """ :TODO
     """
-    ret = j2534lib.PassThruReadMsgs(ChannelID, ct.byref(Msgs), ct.byref(NumMsgs), Timeout)
+    ret = j2534lib.PassThruReadMsgs(ChannelID, ct.byref(Msgs), ct.byref(ct.c_ulong(NumMsgs)), Timeout)
     return ret
 def ptWtiteMsgs(ChannelID, Msgs, NumMsgs, Timeout):
     """[summary]
