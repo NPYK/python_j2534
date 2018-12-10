@@ -6,6 +6,11 @@ from J2534.dll import *
 import ctypes as ct
 from J2534.Define import *
 import J2534.Func as Func
+from J2534.Error import showErr
+
+
+
+
 
 ptData = PassThru_Data
 class baseMsg(PassThru_Msg):
@@ -42,9 +47,11 @@ class ptRxMsg(baseMsg):
         print(self.RxStatus)
         print(self.Data[:self.DataSize])
 class J2534Lib():
+
     def __init__(self):
         self.Devices = dllloader.getDevices()
         self._module = sys.modules[__name__]
+        self.MethodErrorLog = False
     def setDevice(self, key = 0):
         device = self.Devices[key]
         self.name = device['Name']
@@ -52,6 +59,13 @@ class J2534Lib():
         self.canlib = CanlibDll(self.dll)
     def getDevices(self):
         return self.Devices
+    
+    def SetErrorLog(self, state):
+        self.MethodErrorLog = state
+    def err(self, method, ret):
+        if self.MethodErrorLog:
+            showErr(method, ret)
+            
     def __getattr__(self, name):
         try:
             return getattr(self.canlib, name)
@@ -59,13 +73,14 @@ class J2534Lib():
             raise AttributeError("{t} object has no attribute {n}".format(
                 t=str(type(self)), n=name))
 j2534lib = J2534Lib()
-
+_err = j2534lib.err
 
 def ptOpen():
     """Open Device
     """
     DeviceId = ct.c_ulong()
     ret = j2534lib.PassThruOpen(ct.c_void_p(None), ct.byref(DeviceId))
+    _err('ptOpen',ret)
     return ret, DeviceId.value
 def ptClose(DeviceId):
     """Close Device
@@ -74,6 +89,7 @@ def ptClose(DeviceId):
         DeviceId {[int]} -- Device Id Number
     """
     ret = j2534lib.PassThruClose(DeviceId)
+    _err('ptClose',ret)
     return ret
 def ptConnect(DeviceId, ProtocolID, Flags, BaudRate):
     """Connect
@@ -81,16 +97,19 @@ def ptConnect(DeviceId, ProtocolID, Flags, BaudRate):
     """
     ChannelID = ct.c_ulong()
     ret = j2534lib.PassThruConnect(DeviceId, ProtocolID, Flags, BaudRate, ct.byref(ChannelID))
+    _err('ptConnect',ret)
     return ret, ChannelID.value
 def ptDisconnect(ChannelID):
     """ :TODO
     """
     ret = j2534lib.PassThruDisconnect(ChannelID)
+    _err('ptDisconnect',ret)
     return ret
 def ptReadMsgs(ChannelID, Msgs, NumMsgs, Timeout):
     """ :TODO
     """
     ret = j2534lib.PassThruReadMsgs(ChannelID, ct.byref(Msgs), ct.byref(ct.c_ulong(NumMsgs)), Timeout)
+    _err('ptReadMsgs',ret)
     return ret
 def ptWtiteMsgs(ChannelID, Msgs, NumMsgs, Timeout):
     """[summary]
@@ -102,6 +121,7 @@ def ptWtiteMsgs(ChannelID, Msgs, NumMsgs, Timeout):
         Timeout {[type]} -- [description]
     """
     ret = j2534lib.PassThruWriteMsgs(ChannelID, ct.byref(Msgs), ct.byref(ct.c_ulong(NumMsgs)), Timeout)
+    _err('ptWtiteMsgs',ret)
     return ret
 def ptStartPeriodicMsg(ChannelID, Msgs, MsgID, TimeInterval):
     """ :TODO
@@ -116,6 +136,7 @@ def ptStartMsgFilter(ChannelID, FilterType, MaskMsg, PatternMsg, FlowControlMsg)
     """
     pFilterID = ct.c_ulong()
     ret = j2534lib.PassThruStartMsgFilter(ChannelID, FilterType, ct.byref(MaskMsg), ct.byref(PatternMsg), ct.byref(FlowControlMsg), ct.byref(pFilterID))
+    _err('ptStartMsgFilter',ret)
     return ret, pFilterID.value
 def ptStopMsgFilter(ChannelID, MsgID):
     """ :TODO
@@ -137,6 +158,7 @@ def ptReadVersion(DeviceId):
     DllVersion = ct.create_string_buffer(80)
     ApiVersion = ct.create_string_buffer(80)
     ret = j2534lib.PassThruReadVersion(DeviceId, FirmwareVersion, DllVersion, ApiVersion)
+    _err('ptReadVersion',ret)
     return ret, FirmwareVersion.value, DllVersion.value, ApiVersion.value
 def ptGetLastError():
     """ :TODO

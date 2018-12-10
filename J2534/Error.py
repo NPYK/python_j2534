@@ -176,6 +176,9 @@ J2534Error[ERR_INVALID_DEVICE_ID] = (
 def printerr(ret):
     print ( J2534Error[ret][1] )
 
+def showErr( method, ret):
+    print ( "[%s:%s]"%(method, J2534Error[ret][1]))
+
 if __name__ == '__main__':
     import sys
     if sys.argv[1] == 'all':
