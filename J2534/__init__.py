@@ -1,5 +1,3 @@
-
-
 from .wrapper import j2534lib
 
 SetErrorLog = j2534lib.SetErrorLog
@@ -11,7 +9,7 @@ setDevice  = j2534lib.setDevice
 
 from .Define import ProtocolID, BaudRate
 
-from .wrapper import ptData, ptTxMsg, ptRxMsg
+from .wrapper import ptData, ptTxMsg, ptRxMsg, ptMskMsg, ptPatternMsg
 from .wrapper import ptOpen, ptClose
 from .wrapper import ptConnect, ptDisconnect
 from .wrapper import ptReadMsgs, ptWtiteMsgs
