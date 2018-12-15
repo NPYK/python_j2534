@@ -43,9 +43,7 @@ class ptTxMsg(baseMsg):
         self.TxFlags = TxFlags
 class ptRxMsg(baseMsg):
     def show(self):
-        print(self.ProtocolID)
-        print(self.RxStatus)
-        print(self.Data[:self.DataSize])
+        print(self.ProtocolID, self.RxStatus, self.Data[:self.DataSize])
 class J2534Lib():
 
     def __init__(self):
@@ -59,13 +57,13 @@ class J2534Lib():
         self.canlib = CanlibDll(self.dll)
     def getDevices(self):
         return self.Devices
-    
+
     def SetErrorLog(self, state):
         self.MethodErrorLog = state
     def err(self, method, ret):
         if self.MethodErrorLog:
             showErr(method, ret)
-            
+
     def __getattr__(self, name):
         try:
             return getattr(self.canlib, name)

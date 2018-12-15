@@ -11,14 +11,14 @@ except:
     index = 0
 J2534.setDevice(index)
 
-ret, deviceID = func.ptOpen()
+ret, deviceID = J2534.ptOpen()
 
-ret, channelID = func.ptConnect(deviceID, ProtocolID.CAN, 0, BaudRate.B500K)
+ret, channelID = J2534.ptConnect(deviceID, ProtocolID.CAN, 0, BaudRate.B500K)
 
 msg = J2534.ptTxMsg(ProtocolID.CAN, 0)
 msg.setIDandData(0x123, [0,1,2,3,4,5,6,7])
 
-func.ptWtiteMsgs(channelID, msg, 1, 100)
+J2534.ptWtiteMsgs(channelID, msg, 1, 100)
 
-ret = func.ptDisconnect(channelID)
-ret = func.ptClose(deviceID)
+ret = J2534.ptDisconnect(channelID)
+ret = J2534.ptClose(deviceID)

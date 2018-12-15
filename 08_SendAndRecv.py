@@ -6,6 +6,11 @@ import sys
 J2534.SetErrorLog(False)
 import time
 
+BRODCAST_ID = 0x7df
+SEND_ID = 0x7e0
+RECV_ID = 0x7e8
+
+
 try:
     index = int(sys.argv[1], base=10)
 except:
@@ -22,7 +27,7 @@ maskMsg = J2534.ptMskMsg(0)
 maskMsg.setID(0xffffffff)
 
 patternMsg = J2534.ptPatternMsg(0)
-patternMsg.setID(0x241)
+patternMsg.setID(SEND_ID)
 
 flowcontrolMsg = J2534.ptPatternMsg(0)
 flowcontrolMsg.setID(0x641)
