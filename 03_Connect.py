@@ -14,10 +14,8 @@ ret, deviceID = J2534.ptOpen()
 
 ret, channelID = J2534.ptConnect(deviceID, ProtocolID.CAN, 0, BaudRate.B500K)
 
-<<<<<<< HEAD
+
 print(channelID)
 ret= J2534.ptDisconnect(channelID)
-=======
->>>>>>> origin/master
 ret = J2534.ptClose(deviceID)
 
