@@ -1,22 +1,30 @@
 #coding:utf-8
 
-
-
-"""
-	ProtocolID definitions
-"""
-
+#ProtocolID
 class ProtocolID(object):
-	J1850VPW						= 1 # Not supported
-	J1850PWM				    	= 2 # Not supported
-	ISO9141							= 3	# Not supported
-	ISO14230						= 4 # Not supported
+	J1850VPW						= 1 
+	J1850PWM				    	= 2 
+	ISO9141							= 3	
+	ISO14230						= 4 
 	CAN							    = 5
 	ISO15765						= 6
-	SCI_A_ENGINE					= 7 # Not supported
-	SCI_A_TRANS						= 8 # Not supported
-	SCI_B_ENGINE					= 9 # Not supported
-	SCI_B_TRANS						= 10 # Not supported
+	SCI_A_ENGINE					= 7 
+	SCI_A_TRANS						= 8 
+	SCI_B_ENGINE					= 9 
+	SCI_B_TRANS						= 10 
+
+#************************************************/
+#* PassThruConnect definitions —— Connect Flag*/
+#************************************************/
+class Flags(object):
+	CAN_29BIT_ID						= 0x00000100
+	ISO9141_NO_CHECKSUM					= 0x00000200
+	CAN_ID_BOTH							= 0x00000800
+	ISO9141_K_LINE_ONLY					= 0x00001000
+
+class BaudRate(object):
+    B500K								= 500000
+    B250K								= 250000
 
 class FilterType(object):
 	"""
@@ -28,9 +36,7 @@ class FilterType(object):
 	PASS_FILTER_WITH_TRIGGER					= 0x10000005 #DT Not Supported
 	BLOCK_FILTER_WITH_TRIGGER					= 0x10000006 #DT Not Supported
 
-class BaudRate(object):
-	B500K									= 500000
-	B250K									= 500000
+
 
 
 INI_RW_MSG						= 0
