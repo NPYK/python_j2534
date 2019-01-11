@@ -15,7 +15,7 @@ from J2534.Error import showErr
 ptData = PassThru_Data
 class baseMsg(PassThru_Msg):
     def _setData(self, data):
-        print (data)
+        #print (data)
         self.DataSize = len(data)
         self.Data = ptData()
         for i in range(self.DataSize):
@@ -26,7 +26,8 @@ class baseMsg(PassThru_Msg):
     def setIDandData(self, ID, data = []):
         d = Func.IntToID(ID) + data
         self._setData(d)
-
+    def show(self):
+        print(hex(self.ProtocolID), hex(self.RxStatus), [hex(i) for i in self.Data[:self.DataSize]])
 class pt15765Msg(baseMsg):
     def __init__(self, TxFlag):
         self.ProtocolID = ProtocolID.ISO15765
@@ -42,8 +43,7 @@ class ptTxMsg(baseMsg):
         self.ProtocolID = ProtocolID
         self.TxFlags = TxFlags
 class ptRxMsg(baseMsg):
-    def show(self):
-        print(self.ProtocolID, self.RxStatus, self.Data[:self.DataSize])
+    pass
 class J2534Lib():
 
     def __init__(self):
