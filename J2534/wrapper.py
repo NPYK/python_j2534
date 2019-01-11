@@ -40,6 +40,14 @@ class ptTxMsg(baseMsg):
 class ptRxMsg(baseMsg):
     def show(self):
         print(self.ProtocolID, self.RxStatus, self.Data[:self.DataSize])
+
+class GetParameter(SCONFIG_LIST, Parameter):
+    def __init__(self):
+        self.NumOfParams = len(Parameter.USED)
+        self.paras = SCONFIG * self.NumOfParams
+        for i in range(self.NumOfParams):
+            self.paras()[i].set(Parameter.USED[i])
+        self.ConfigPtr = self.paras()
 class J2534Lib():
 
     def __init__(self):
@@ -167,10 +175,15 @@ def ptIoctl(ChannelID, IoctlID, Input, Output):
     _err('ptIoctl',ret)
     return ret
 # IOCTL 
+
+def GetConfig(ChannelID):
+    Paras = GetParameter()
+    ptIoctl(ChannelID, IoctlID.GET_CONFIG, Paras, ct.c_void_p(None))
+
 def ReadVbat(ChannelID):
     _voltage = ct.c_ulong()
     ret = ptIoctl(ChannelID, IoctlID.READ_VBATT, ct.c_void_p(None), ct.byref(_voltage))
-    return ret, _voltage
+    return ret, _voltage.value
 
 def ClearTxBuf(ChannelID):
     ret = ptIoctl(ChannelID, IoctlID.CLEAR_TX_BUFFER, ct.c_void_p(None), ct.c_void_p(None))

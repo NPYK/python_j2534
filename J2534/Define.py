@@ -80,6 +80,7 @@ class TxFlags(addBase):
     ISO15765_FRAME_PAD                  = 0x00000040
 
 class Parameter(object):
+    
     DATA_RATE                           = 0x01
     # unused                            = 0x02
     LOOPBACK                            = 0x03
@@ -123,3 +124,9 @@ class Parameter(object):
     STMIN_TX                          = 0x23
     T3_MAX                            = 0x24
     ISO15765_WFT_MAX                  = 0x25
+    USED = [
+        DATA_RATE,LOOPBACK,NODE_ADDRESS,NETWORK_LINE,P1_MAX,P3_MIN,P4_MIN,\
+        W0,W1,W2,W3,W4,W5,TIDLE,TINIL,TWUP,PARITY,BIT_SAMPLE_POINT,SYNC_JUMP_WIDTH,\
+        T1_MAX,T2_MAX,T3_MAX,T4_MAX,T5_MAX,\
+        ISO15765_BS,ISO15765_STMIN,DATA_BITS,FIVE_BAUD_MOD,BS_TX,STMIN_TX,T3_MAX,ISO15765_WFT_MAX
+    ]

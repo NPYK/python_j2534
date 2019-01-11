@@ -12,18 +12,18 @@ class PassThru_Msg(ct.Structure):
         ("ExtraDataIndex",ct.c_ulong),
         ("Data", PassThru_Data)]
 
-class Sconfig(ct.Structure):
+class SCONFIG(ct.Structure):
     _fields_ = [
-        ("Parameter", ct.c_ulong),
-        ("Value", ct.c_char_p)]
-class Sconfig_List(ct.Structure):
+        ("Parameter",   ct.c_ulong),
+        ("Value",       ct.c_ulong)
+    ]
+    def set(self, para):
+        self.Parameter = para
+class SCONFIG_LIST(ct.Structure):
     _fields_ = [
         ("NumOfParams", ct.c_ulong),
-        ("BytePtr", ct.POINTER(Sconfig))]
-class Sbyte_Array(ct.Structure):
-    _fields_ = [
-        ("NumOfBytes", ct.c_ulong),
-        ("BytePtr", ct.c_char_p)]
+        ("ConfigPtr", ct.POINTER(SCONFIG))
+    ]
 
 class CanlibDll(MyDll):
     """
