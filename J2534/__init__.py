@@ -17,4 +17,5 @@ from .wrapper import ptStartPeriodicMsg, ptStopPeriodicMsg
 from .wrapper import ptStartMsgFilter, ptStopMsgFilter
 from .wrapper import ptSetProgrammingVoltage, ptReadVersion, ptGetLastError, ptIoctl
 
+from .wrapper import ReadVbat, ClearTxBuf, ClearRxBuf
 from .Error import J2534Error as Error

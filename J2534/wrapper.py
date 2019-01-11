@@ -8,14 +8,10 @@ from J2534.Define import *
 import J2534.Func as Func
 from J2534.Error import showErr
 
-
-
-
-
 ptData = PassThru_Data
 class baseMsg(PassThru_Msg):
     def _setData(self, data):
-        #print (data)
+        print (data)
         self.DataSize = len(data)
         self.Data = ptData()
         for i in range(self.DataSize):
@@ -26,8 +22,7 @@ class baseMsg(PassThru_Msg):
     def setIDandData(self, ID, data = []):
         d = Func.IntToID(ID) + data
         self._setData(d)
-    def show(self):
-        print(hex(self.ProtocolID), hex(self.RxStatus), [hex(i) for i in self.Data[:self.DataSize]])
+
 class pt15765Msg(baseMsg):
     def __init__(self, TxFlag):
         self.ProtocolID = ProtocolID.ISO15765
@@ -43,7 +38,8 @@ class ptTxMsg(baseMsg):
         self.ProtocolID = ProtocolID
         self.TxFlags = TxFlags
 class ptRxMsg(baseMsg):
-    pass
+    def show(self):
+        print(self.ProtocolID, self.RxStatus, self.Data[:self.DataSize])
 class J2534Lib():
 
     def __init__(self):
@@ -164,7 +160,22 @@ def ptGetLastError():
     ErrorMsg = ct.create_string_buffer(80)
     j2534lib.PassThruGetLastError(ErrorMsg)
     return ErrorMsg.value
-def ptIoctl(HandleID, IoctlID, Input, Output):
+def ptIoctl(ChannelID, IoctlID, Input, Output):
     """ :TODO
     """
-    j2534lib.PassThruIoctl(HandleID, IoctlID, Input, Output)
+    ret = j2534lib.PassThruIoctl(ChannelID, IoctlID, Input, Output)
+    _err('ptIoctl',ret)
+    return ret
+# IOCTL 
+def ReadVbat(ChannelID):
+    _voltage = ct.c_ulong()
+    ret = ptIoctl(ChannelID, IoctlID.READ_VBATT, ct.c_void_p(None), ct.byref(_voltage))
+    return ret, _voltage
+
+def ClearTxBuf(ChannelID):
+    ret = ptIoctl(ChannelID, IoctlID.CLEAR_TX_BUFFER, ct.c_void_p(None), ct.c_void_p(None))
+    return ret
+
+def ClearRxBuf(ChannelID):
+    ret = ptIoctl(ChannelID, IoctlID.CLEAR_RX_BUFFER, ct.c_void_p(None), ct.c_void_p(None))
+    return ret
