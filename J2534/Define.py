@@ -7,6 +7,16 @@ class addBase(object):
         for i in args:
             out = out | i
         return out
+    
+    @staticmethod
+    def check(flags, *args):
+        for i in args:
+            if flags & i:
+                print (flags & i)
+                pass
+            else:
+                return False
+        return True
 class ProtocolID(object):
     J1850VPW                        = 1 
     J1850PWM                        = 2 

@@ -140,6 +140,9 @@ def ptStartMsgFilter(ChannelID, FilterType, MaskMsg, PatternMsg, FlowControlMsg)
     ret = j2534lib.PassThruStartMsgFilter(ChannelID, FilterType, ct.byref(MaskMsg), ct.byref(PatternMsg), ct.byref(FlowControlMsg), ct.byref(pFilterID))
     _err('ptStartMsgFilter',ret)
     return ret, pFilterID.value
+def ptFlowControl(ChannelID, mask, pattern, flowcontrol, txflag):
+    if txflag
+    ptStartMsgFilter(ChannelID, FilterType.FLOW_CONTROL_FILTER, MaskMsg, PatternMsg, FlowControlMsg)
 def ptStopMsgFilter(ChannelID, MsgID):
     """ :TODO
     """
