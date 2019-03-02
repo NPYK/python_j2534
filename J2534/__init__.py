@@ -2,6 +2,8 @@ from .wrapper import j2534lib
 
 SetErrorLog = j2534lib.SetErrorLog
 getDevices = j2534lib.getDevices
+
+# set the device
 setDevice  = j2534lib.setDevice
 
 

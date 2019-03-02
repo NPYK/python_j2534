@@ -12,6 +12,8 @@ J2534.setDevice(index)
 
 ret, deviceID = J2534.ptOpen()
 
+# connect one channel of the device
+# set the baudrate to 500K
 ret, channelID = J2534.ptConnect(deviceID, ProtocolID.CAN, 0, BaudRate.B500K)
 
 

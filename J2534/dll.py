@@ -17,7 +17,9 @@ class SCONFIG(ct.Structure):
         ("Parameter",   ct.c_ulong),
         ("Value",       ct.c_ulong)
     ]
-    def set(self, para):
+    def setpara(self, para):
+        self.Parameter = para
+    def setvalue(self, para):
         self.Parameter = para
 class SCONFIG_LIST(ct.Structure):
     _fields_ = [

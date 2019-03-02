@@ -55,14 +55,26 @@ class J2534Lib():
         self._module = sys.modules[__name__]
         self.MethodErrorLog = False
     def setDevice(self, key = 0):
+        """[select the device]
+        
+        Keyword Arguments:
+            key {int} -- [the j2534 index in register ] (default: {0})
+        """
         device = self.Devices[key]
         self.name = device['Name']
         self.dll = dllloader.load_dll(device['FunctionLibrary'])
         self.canlib = CanlibDll(self.dll)
     def getDevices(self):
+        """[return all the devices dict]
+        """
         return self.Devices
 
     def SetErrorLog(self, state):
+        """[on / off the error log]
+        
+        Arguments:
+            state {[bool]} -- [open or close the error log]
+        """
         self.MethodErrorLog = state
     def err(self, method, ret):
         if self.MethodErrorLog:
@@ -78,7 +90,11 @@ j2534lib = J2534Lib()
 _err = j2534lib.err
 
 def ptOpen():
-    """Open Device
+    """[open selected j2534 device]
+    
+    Returns:
+        ret  --  error type
+        [type] -- [description]
     """
     DeviceId = ct.c_ulong()
     ret = j2534lib.PassThruOpen(ct.c_void_p(None), ct.byref(DeviceId))
@@ -94,15 +110,24 @@ def ptClose(DeviceId):
     _err('ptClose',ret)
     return ret
 def ptConnect(DeviceId, ProtocolID, Flags, BaudRate):
-    """Connect
+    """Connect one channel in the J2534, if the j2534 device have more, this api will open only one.
 
+    Returns:
+        ret  --  error type
+        id   --  channel id
     """
     ChannelID = ct.c_ulong()
     ret = j2534lib.PassThruConnect(DeviceId, ProtocolID, Flags, BaudRate, ct.byref(ChannelID))
     _err('ptConnect',ret)
     return ret, ChannelID.value
 def ptDisconnect(ChannelID):
-    """ :TODO
+    """disconnect one channel
+    
+    Arguments:
+        ChannelID {[int]} -- [description]
+    
+    Returns:
+        [ret] -- [error type]
     """
     ret = j2534lib.PassThruDisconnect(ChannelID)
     _err('ptDisconnect',ret)
@@ -126,31 +151,35 @@ def ptWtiteMsgs(ChannelID, Msgs, NumMsgs, Timeout):
     _err('ptWtiteMsgs',ret)
     return ret
 def ptStartPeriodicMsg(ChannelID, Msgs, MsgID, TimeInterval):
-    """ :TODO
+    """ TODO 
     """
-    j2534lib.PassThruStartPeriodicMsg(ChannelID, ct.byref(Msgs), ct.byref(MsgID), TimeInterval)
+    ret = j2534lib.PassThruStartPeriodicMsg(ChannelID, ct.byref(Msgs), ct.byref(MsgID), TimeInterval)
+    _err('ptStartPeriodicMsg',ret)
+    return ret
 def ptStopPeriodicMsg(ChannelID, MsgID):
-    """ :TODO
+    """ stop period msg
     """
-    j2534lib.PassThruStopPeriodicMsg(ChannelID, MsgID)
+    ret = j2534lib.PassThruStopPeriodicMsg(ChannelID, MsgID)
+    return ret
 def ptStartMsgFilter(ChannelID, FilterType, MaskMsg, PatternMsg, FlowControlMsg):
-    """ :TODO
+    """ start the msg filter
     """
     pFilterID = ct.c_ulong()
     ret = j2534lib.PassThruStartMsgFilter(ChannelID, FilterType, ct.byref(MaskMsg), ct.byref(PatternMsg), ct.byref(FlowControlMsg), ct.byref(pFilterID))
     _err('ptStartMsgFilter',ret)
     return ret, pFilterID.value
-def ptFlowControl(ChannelID, mask, pattern, flowcontrol, txflag):
-    if txflag
-    ptStartMsgFilter(ChannelID, FilterType.FLOW_CONTROL_FILTER, MaskMsg, PatternMsg, FlowControlMsg)
-def ptStopMsgFilter(ChannelID, MsgID):
-    """ :TODO
+def ptStopMsgFilter(ChannelID, FilterID):
+    """ stop the msg filter
     """
-    j2534lib.PassThruStopMsgFilter(ChannelID, MsgID)
+    ret = j2534lib.PassThruStopMsgFilter(ChannelID, FilterID)
+    _err('ptStopMsgFilter',ret)
+    return ret
 def ptSetProgrammingVoltage(DeviceID, PinNumber, Voltage):
-    """ :TODO
+    """ set the pin voltage
     """
-    j2534lib.PassThruSetProgrammingVoltage(DeviceID, PinNumber, Voltage)
+    ret = j2534lib.PassThruSetProgrammingVoltage(DeviceID, PinNumber, Voltage)
+    _err('ptSetProgrammingVoltage',ret)
+    return ret
 def ptReadVersion(DeviceId):
     """Read Dll Version Msg
     
@@ -166,27 +195,52 @@ def ptReadVersion(DeviceId):
     _err('ptReadVersion',ret)
     return ret, FirmwareVersion.value, DllVersion.value, ApiVersion.value
 def ptGetLastError():
-    """ :TODO
+    """ get the last error
     """
     ErrorMsg = ct.create_string_buffer(80)
     j2534lib.PassThruGetLastError(ErrorMsg)
     return ErrorMsg.value
 def ptIoctl(ChannelID, IoctlID, Input, Output):
-    """ :TODO
+    """ Ioctl base function
     """
     ret = j2534lib.PassThruIoctl(ChannelID, IoctlID, Input, Output)
     _err('ptIoctl',ret)
     return ret
 # IOCTL 
 
-def GetConfig(ChannelID):
-    Paras = GetParameter()
-    ptIoctl(ChannelID, IoctlID.GET_CONFIG, Paras, ct.c_void_p(None))
+def GetConfig(ChannelID, ioctlid):
+    conf = SCONFIG_LIST()
+    conf.NumOfParams = 1
+    conf.paras = SCONFIG * 1
+    conf.paras[0].setpara(ioctlid)
+    conf.ConfigPtr = conf.paras()
+    ret = ptIoctl(ChannelID, IoctlID.GET_CONFIG, ct.byref(conf), ct.c_void_p(None))
+    return ret, conf.ConfigPtr[0].value
 
+def SetConfig(ChannelID, ioctlid, value):
+    conf = SCONFIG_LIST()
+    conf.NumOfParams = 1
+    conf.paras = SCONFIG * 1
+    conf.paras[0].setpara(ioctlid)
+    conf.paras[0].setvalue(value)
+    conf.ConfigPtr = conf.paras()
+    ret = ptIoctl(ChannelID, IoctlID.SET_CONFIG, ct.byref(conf), ct.c_void_p(None))
+    return ret
 def ReadVbat(ChannelID):
     _voltage = ct.c_ulong()
     ret = ptIoctl(ChannelID, IoctlID.READ_VBATT, ct.c_void_p(None), ct.byref(_voltage))
     return ret, _voltage.value
+
+def ReadProgVoltage(ChannelID):
+    _voltage = ct.c_ulong()
+    ret = ptIoctl(ChannelID, IoctlID.READ_PROG_VOLTAGE, ct.c_void_p(None), ct.byref(_voltage))
+    return ret, _voltage.value
+
+def FiveBaudInit(ChannelID):
+    return None
+
+def FastInit(ChannelID):
+    return None
 
 def ClearTxBuf(ChannelID):
     ret = ptIoctl(ChannelID, IoctlID.CLEAR_TX_BUFFER, ct.c_void_p(None), ct.c_void_p(None))
@@ -195,3 +249,18 @@ def ClearTxBuf(ChannelID):
 def ClearRxBuf(ChannelID):
     ret = ptIoctl(ChannelID, IoctlID.CLEAR_RX_BUFFER, ct.c_void_p(None), ct.c_void_p(None))
     return ret
+def ClearPeriodicMsgs(ChannelID):
+    ret = ptIoctl(ChannelID, IoctlID.CLEAR_PERIODIC_MSGS, ct.c_void_p(None), ct.c_void_p(None))
+    return ret
+def ClearMsgsFilters(ChannelID):
+    ret = ptIoctl(ChannelID, IoctlID.CLEAR_MSG_FILTERS, ct.c_void_p(None), ct.c_void_p(None))
+    return ret
+def ClearFunctMsgLookUpTable(ChannelID):
+    ret = ptIoctl(ChannelID, IoctlID.CLEAR_FUNCT_MSG_LOOKUP_TABLE, ct.c_void_p(None), ct.c_void_p(None))
+    return ret
+def AddToFunctMsgLookUpTable(ChannelID):
+    #ret = ptIoctl(ChannelID, IoctlID.CLEAR_PERIODIC_MSGS, ct.c_void_p(None), ct.c_void_p(None))
+    return None
+def DeleteFromFunctMsgLookUpTable(ChannelID):
+    #ret = ptIoctl(ChannelID, IoctlID.CLEAR_PERIODIC_MSGS, ct.c_void_p(None), ct.c_void_p(None))
+    return None
